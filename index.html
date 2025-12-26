@@ -1,146 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Certificate Verification</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0b3c5d, #1e88e5);
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-        }
-
-        .card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 520px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-            text-align: center;
-        }
-
-        h1 {
-            margin-top: 0;
-            color: #0b3c5d;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-weight: 600;
-            color: #fff;
-            margin: 15px 0 25px;
-        }
-
-        .verified {
-            background: #28a745;
-        }
-
-        .not-verified {
-            background: #dc3545;
-        }
-
-        .details {
-            text-align: left;
-            font-size: 16px;
-        }
-
-        .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .label {
-            font-weight: 600;
-            color: #0b3c5d;
-        }
-
-        .value {
-            color: #333;
-            text-align: right;
-            max-width: 60%;
-            word-wrap: break-word;
-        }
-
-        footer {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #777;
-            text-align: center;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Certificate Verify</title>
+<style>
+    body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
+    #verified-img { width: 200px; height: 200px; }
+    #qr-img { width: 150px; height: 150px; margin-top: 20px; }
+</style>
 </head>
-
 <body>
 
-<div class="card">
-    <h1>Certificate Verification</h1>
+<h1>Certificate Verified ✅</h1>
 
-    <div id="statusBadge" class="badge verified">Verified ✅</div>
+<!-- Bara VERIFIED PNG -->
+<img id="verified-img" src="https://yourdomain.com/verified.png" alt="Verified">
 
-    <div class="details">
-        <div class="row">
-            <div class="label">Certificate No</div>
-            <div class="value" id="certNo">—</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Name</div>
-            <div class="value" id="name">—</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Designation</div>
-            <div class="value" id="designation">—</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Date of Issue</div>
-            <div class="value" id="date">—</div>
-        </div>
-    </div>
-
-    <footer>
-        This certificate has been generated and verified digitally.
-    </footer>
-</div>
+<!-- QR Code -->
+<img id="qr-img" src="" alt="QR Code">
 
 <script>
-window.onload = function () {
+// Get Certificate No from URL query string
+const urlParams = new URLSearchParams(window.location.search);
+const certNo = urlParams.get('certNo') || 'NA';
 
-    const params = new URLSearchParams(window.location.search);
-
-    const certNo = params.get('certNo');
-    const name = params.get('name');
-    const designation = params.get('designation');
-    const date = params.get('date');
-    const valid = params.get('valid');
-
-    document.getElementById('certNo').textContent = certNo ? decodeURIComponent(certNo) : 'Not Found';
-    document.getElementById('name').textContent = name ? decodeURIComponent(name) : 'Not Found';
-    document.getElementById('designation').textContent = designation ? decodeURIComponent(designation) : 'Not Found';
-    document.getElementById('date').textContent = date ? decodeURIComponent(date) : 'Not Found';
-
-    const badge = document.getElementById('statusBadge');
-
-    if (valid && valid.toLowerCase() === 'false') {
-        badge.textContent = 'Not Verified ❌';
-        badge.classList.remove('verified');
-        badge.classList.add('not-verified');
-    } else {
-        badge.textContent = 'Verified ✅';
-    }
-};
+// Set QR image dynamically
+document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${certNo}&format=png`;
 </script>
 
 </body>
