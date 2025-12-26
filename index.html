@@ -14,18 +14,28 @@
         background-color: #f0f4f8;
         margin: 0;
     }
+    /* Certificate No bold upar */
     #cert-no {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: bold;
         color: #333;
         margin-bottom: 30px;
         text-align: center;
     }
+    /* QR Image styling */
     #qr-img {
         width: 250px;
         height: 250px;
         border-radius: 20px;
         box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+    }
+    /* Verified Certificate text */
+    #verified-text {
+        font-size: 24px;
+        font-weight: bold;
+        color: #28a745; /* green color */
+        text-align: center;
     }
 </style>
 </head>
@@ -36,6 +46,9 @@
 
 <!-- QR Image -->
 <img id="qr-img" src="https://png.pngtree.com/png-clipart/20230913/original/pngtree-green-qr-code-logo-vector-png-image_11080497.png" alt="Verified QR">
+
+<!-- Verified Certificate text -->
+<p id="verified-text">Verified Certificate</p>
 
 <script>
 // Get Certificate No from URL query string
