@@ -4,28 +4,50 @@
 <meta charset="UTF-8">
 <title>Certificate Verify</title>
 <style>
-    body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
-    #verified-img { width: 200px; height: 200px; }
-    #qr-img { width: 150px; height: 150px; margin-top: 20px; }
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+    .verified-circle {
+        width: 200px;
+        height: 200px;
+        border: 6px solid #28a745; /* green border */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 30px;
+        text-align: center;
+        padding: 10px;
+    }
+    #cert-no {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
 </style>
 </head>
 <body>
 
-<h1>Certificate Verified ✅</h1>
+<div class="verified-circle">
+    Certificate Verified
+</div>
 
-<!-- Bara VERIFIED PNG -->
-<img id="verified-img" src="https://yourdomain.com/verified.png" alt="Verified">
-
-<!-- QR Code -->
-<img id="qr-img" src="" alt="QR Code">
+<p id="cert-no"></p>
 
 <script>
 // Get Certificate No from URL query string
 const urlParams = new URLSearchParams(window.location.search);
 const certNo = urlParams.get('certNo') || 'NA';
-
-// Set QR image dynamically
-document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${certNo}&format=png`;
+document.getElementById('cert-no').innerText = `Certificate No: ${certNo}`;
 </script>
 
 </body>
