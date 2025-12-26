@@ -1,60 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Certificate Verify</title>
-<style>
-    body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-        background-color: #f0f4f8;
-        margin: 0;
-    }
-    /* Certificate No bold upar */
-    #cert-no {
-        font-size: 32px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 30px;
-        text-align: center;
-    }
-    /* QR Image styling */
-    #qr-img {
-        width: 250px;
-        height: 250px;
-        border-radius: 20px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        margin-bottom: 15px;
-    }
-    /* Verified Certificate text */
-    #verified-text {
-        font-size: 24px;
-        font-weight: bold;
-        color: #28a745; /* green color */
-        text-align: center;
-    }
-</style>
+    <meta charset="UTF-8">
+    <title>Certificate Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0b3c5d, #1e88e5);
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        #certNo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0b3c5d;
+            margin-bottom: 20px;
+        }
+
+        #qr-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+        }
+
+        #issued-text {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- Certificate No -->
-<p id="cert-no">Certificate No: NA</p>
+<div class="card">
+    <!-- Certificate No -->
+    <div id="certNo">Certificate No: NA</div>
 
-<!-- QR Image -->
-<img id="qr-img" src="https://png.pngtree.com/png-clipart/20230913/original/pngtree-green-qr-code-logo-vector-png-image_11080497.png" alt="Verified QR">
+    <!-- Verified QR PNG -->
+    <img id="qr-img" src="https://png.pngtree.com/png-clipart/20230913/original/pngtree-green-qr-code-logo-vector-png-image_11080497.png" alt="Verified QR">
 
-<!-- Verified Certificate text -->
-<p id="verified-text">Verified Certificate</p>
+    <!-- Issued Text -->
+    <div id="issued-text">
+        Certificate issued by Quality Enhancement Cell (QEC) Mohammad Ali Jinnah University, Karachi
+    </div>
+</div>
 
 <script>
-// Get Certificate No from URL query string
-const urlParams = new URLSearchParams(window.location.search);
-const certNo = urlParams.get('certNo') || 'NA';
-document.getElementById('cert-no').innerText = `Certificate No: ${certNo}`;
+    // Get Certificate No from URL query string
+    const params = new URLSearchParams(window.location.search);
+    const certNo = params.get('certNo') || 'NA';
+    document.getElementById('certNo').textContent = `Certificate No: ${certNo}`;
 </script>
 
 </body>
