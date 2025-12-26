@@ -14,40 +14,28 @@
         background-color: #f0f4f8;
         margin: 0;
     }
-    .verified-circle {
-        width: 250px;
-        height: 250px;
-        border: 8px solid #28a745; /* green border */
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    #cert-no {
         font-size: 28px;
         font-weight: bold;
-        color: #28a745;
+        color: #333;
         margin-bottom: 30px;
         text-align: center;
-        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        padding: 10px;
     }
-    #cert-no {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-        background: #ffffff;
-        padding: 12px 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    #qr-img {
+        width: 250px;
+        height: 250px;
+        border-radius: 20px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
 </style>
 </head>
 <body>
 
-<div class="verified-circle">
-    Certificate Verified
-</div>
-
+<!-- Certificate No -->
 <p id="cert-no">Certificate No: NA</p>
+
+<!-- QR Image -->
+<img id="qr-img" src="https://png.pngtree.com/png-clipart/20230913/original/pngtree-green-qr-code-logo-vector-png-image_11080497.png" alt="Verified QR">
 
 <script>
 // Get Certificate No from URL query string
