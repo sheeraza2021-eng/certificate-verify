@@ -48,140 +48,20 @@
       width: auto;
       object-fit: contain;
     }
-
-    .badge {
-      display: inline-block;
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-weight: 600;
-      color: #fff;
-      margin: 15px 0 25px;
-    }
-
-    .verified { background: #28a745; }
-    .not-verified { background: #dc3545; }
-
-    .details { text-align: left; font-size: 16px; }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .label { font-weight: 600; color: #0b3c5d; }
-    .value { color: #333; text-align: right; max-width: 60%; word-wrap: break-word; }
-
-    footer {
-      margin-top: 20px;
-      font-size: 13px;
-      color: #777;
-      text-align: center;
-    }
   </style>
 </head>
 
 <body>
   <div class="card">
     <div class="header-row">
-      <!-- Left: JSMU logo -->
-      <img src="https://onlinepgc-my.sharepoint.com/:i:/g/personal/sheeraz_ahmed_jinnah_edu/IQBro1fBVHmPQ69wRqRcl6nEAemf_nySXH9ADV01vv9HBuM?e=AvBOiJ" alt="JSMU Logo" class="logo">
+      <!-- Left: QEC logo -->
+      <img src="data:image/png;base64,PASTE_QEC_LOGO_BASE64_HERE" alt="QEC Logo" class="logo">
 
       <h1>Certificate Verification</h1>
 
-      <!-- Right: MAJU QEC logo -->
-      <img src="https://onlinepgc-my.sharepoint.com/personal/sheeraz_ahmed_jinnah_edu/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fsheeraz%5Fahmed%5Fjinnah%5Fedu%2FDocuments%2FScans%2FHTML%2FMaju%20Logo%2Epng&parent=%2Fpersonal%2Fsheeraz%5Fahmed%5Fjinnah%5Fedu%2FDocuments%2FScans%2FHTML&ga=1" alt="MAJU QEC Logo" class="logo">
+      <!-- Right: MAJU logo -->
+      <img src="data:image/png;base64,PASTE_MAJU_LOGO_BASE64_HERE" alt="MAJU Logo" class="logo">
     </div>
-
-    <div id="statusBadge" class="badge verified">Verified ✅</div>
-
-    <div class="details">
-      <div class="row">
-        <div class="label">Certificate No</div>
-        <div class="value" id="certNo">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Name</div>
-        <div class="value" id="name">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Designation</div>
-        <div class="value" id="designation">—</div>
-      </div>
-      <div class="row">
-        <div class="label">Date of Issue</div>
-        <div class="value" id="date">—</div>
-      </div>
-    </div>
-
-    <footer>
-      This Certificate issued by the QEC Department, Mohammad Ali Jinnah University, Karachi.
-    </footer>
   </div>
-
-  <script>
-    window.onload = async function () {
-      const params = new URLSearchParams(window.location.search);
-      const certNo = params.get('certNo');
-
-      const badge = document.getElementById('statusBadge');
-      const fields = {
-        cert: document.getElementById('certNo'),
-        name: document.getElementById('name'),
-        designation: document.getElementById('designation'),
-        date: document.getElementById('date')
-      };
-
-      if (!certNo) {
-        badge.textContent = 'Not Verified ❌';
-        badge.classList.remove('verified');
-        badge.classList.add('not-verified');
-        fields.cert.textContent = 'Not Found';
-        fields.name.textContent = 'Not Found';
-        fields.designation.textContent = 'Not Found';
-        fields.date.textContent = 'Not Found';
-        return;
-      }
-
-      const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
-
-      try {
-        const res = await fetch(flowUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ certNo })
-        });
-        const data = await res.json();
-
-        if (data.Message === 'No') {
-          badge.textContent = 'Not Verified ❌';
-          badge.classList.remove('verified');
-          badge.classList.add('not-verified');
-          fields.cert.textContent = certNo;
-          fields.name.textContent = 'Not Found';
-          fields.designation.textContent = 'Not Found';
-          fields.date.textContent = 'Not Found';
-        } else {
-          badge.textContent = 'Verified ✅';
-          badge.classList.remove('not-verified');
-          badge.classList.add('verified');
-          fields.cert.textContent = data['Certificate No'];
-          fields.name.textContent = data['Name'];
-          fields.designation.textContent = data['Designation'];
-          fields.date.textContent = data['Date of Issue'];
-        }
-      } catch (e) {
-        console.error('Verification error:', e);
-        badge.textContent = 'Not Verified ❌';
-        badge.classList.remove('verified');
-        badge.classList.add('not-verified');
-        fields.cert.textContent = certNo || 'Not Found';
-        fields.name.textContent = 'Error';
-        fields.designation.textContent = 'Error';
-        fields.date.textContent = 'Error';
-      }
-    };
-  </script>
 </body>
 </html>
