@@ -26,9 +26,25 @@
             text-align: center;
         }
 
-        h1 {
-            margin-top: 0;
+        /* Header row with logos + title */
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .header-row h1 {
+            flex: 1;
+            margin: 0;
             color: #0b3c5d;
+            text-align: center;
+            font-size: 22px;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
         }
 
         .badge {
@@ -84,7 +100,12 @@
 <body>
 
 <div class="card">
-    <h1>Certificate Verification</h1>
+    <!-- Logos + Title -->
+    <div class="header-row">
+        <img src="logo-jinnah.png" alt="JSMU Logo" class="logo">
+        <h1>Certificate Verification</h1>
+        <img src="logo-maju.png" alt="MAJU QEC Logo" class="logo">
+    </div>
 
     <div id="statusBadge" class="badge verified">Verified ✅</div>
 
