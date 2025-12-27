@@ -86,7 +86,7 @@
 <div class="card">
     <h1>Certificate Verification</h1>
 
-    <div id="statusBadge" class="badge">Loading...</div>
+    <div id="statusBadge" class="badge verified">Verified ✅</div>
 
     <div class="details">
         <div class="row">
@@ -116,55 +116,66 @@
 </div>
 
 <script>
-window.onload = function () {
+window.onload = async function () {
     const params = new URLSearchParams(window.location.search);
     const certNo = params.get('certNo');
 
     const badge = document.getElementById('statusBadge');
+    const fields = {
+        cert: document.getElementById('certNo'),
+        name: document.getElementById('name'),
+        designation: document.getElementById('designation'),
+        date: document.getElementById('date')
+    };
 
     if (!certNo) {
-        document.getElementById('certNo').textContent = 'Not Found';
         badge.textContent = 'Not Verified ❌';
+        badge.classList.remove('verified');
         badge.classList.add('not-verified');
+        fields.cert.textContent = 'Not Found';
+        fields.name.textContent = 'Not Found';
+        fields.designation.textContent = 'Not Found';
+        fields.date.textContent = 'Not Found';
         return;
     }
 
-    // Call your Power Automate flow endpoint
-    fetch("https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ certNo })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.Message && data.Message === "No") {
-            // Status blank → Not Verified
+    const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
+
+    try {
+        const res = await fetch(flowUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ certNo })
+        });
+        const data = await res.json();
+
+        if (data.Message === 'No') {
             badge.textContent = 'Not Verified ❌';
             badge.classList.remove('verified');
             badge.classList.add('not-verified');
-
-            document.getElementById('certNo').textContent = certNo;
-            document.getElementById('name').textContent = 'Not Found';
-            document.getElementById('designation').textContent = 'Not Found';
-            document.getElementById('date').textContent = 'Not Found';
+            fields.cert.textContent = certNo;
+            fields.name.textContent = 'Not Found';
+            fields.designation.textContent = 'Not Found';
+            fields.date.textContent = 'Not Found';
         } else {
-            // Status Issued → show details
             badge.textContent = 'Verified ✅';
             badge.classList.remove('not-verified');
             badge.classList.add('verified');
-
-            document.getElementById('certNo').textContent = data["Certificate No"];
-            document.getElementById('name').textContent = data["Name"];
-            document.getElementById('designation').textContent = data["Designation"];
-            document.getElementById('date').textContent = data["Date of Issue"];
+            fields.cert.textContent = data['Certificate No'];
+            fields.name.textContent = data['Name'];
+            fields.designation.textContent = data['Designation'];
+            fields.date.textContent = data['Date of Issue'];
         }
-    })
-    .catch(err => {
-        console.error(err);
-        badge.textContent = 'Error ❌';
+    } catch (e) {
+        console.error('Verification error:', e);
+        badge.textContent = 'Not Verified ❌';
         badge.classList.remove('verified');
         badge.classList.add('not-verified');
-    });
+        fields.cert.textContent = certNo || 'Not Found';
+        fields.name.textContent = 'Error';
+        fields.designation.textContent = 'Error';
+        fields.date.textContent = 'Error';
+    }
 };
 </script>
 
