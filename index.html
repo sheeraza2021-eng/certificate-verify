@@ -19,31 +19,64 @@
         .card {
             background: #ffffff;
             width: 100%;
-            max-width: 450px;
+            max-width: 520px;
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.25);
             text-align: center;
         }
 
-        #certNo {
-            font-size: 28px;
-            font-weight: bold;
+        h1 {
+            margin-top: 0;
             color: #0b3c5d;
-            margin-bottom: 20px;
         }
 
-        #qr-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 16px;
-            margin-bottom: 15px;
+        .badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #fff;
+            margin: 15px 0 25px;
         }
 
-        #issued-text {
+        .verified {
+            background: #28a745;
+        }
+
+        .not-verified {
+            background: #dc3545;
+        }
+
+        .details {
+            text-align: left;
             font-size: 16px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #0b3c5d;
+        }
+
+        .value {
             color: #333;
-            line-height: 1.5;
+            text-align: right;
+            max-width: 60%;
+            word-wrap: break-word;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+            text-align: center;
         }
     </style>
 </head>
@@ -51,23 +84,88 @@
 <body>
 
 <div class="card">
-    <!-- Certificate No -->
-    <div id="certNo">Certificate No: NA</div>
+    <h1>Certificate Verification</h1>
 
-    <!-- Verified QR PNG -->
-    <img id="qr-img" src="https://png.pngtree.com/png-clipart/20230913/original/pngtree-green-qr-code-logo-vector-png-image_11080497.png" alt="Verified QR">
+    <div id="statusBadge" class="badge">Loading...</div>
 
-    <!-- Issued Text -->
-    <div id="issued-text">
-        Certificate issued by the Quality Enhancement Cell (QEC), Mohammad Ali Jinnah University, Karachi
+    <div class="details">
+        <div class="row">
+            <div class="label">Certificate No</div>
+            <div class="value" id="certNo">—</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Name</div>
+            <div class="value" id="name">—</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Designation</div>
+            <div class="value" id="designation">—</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Date of Issue</div>
+            <div class="value" id="date">—</div>
+        </div>
     </div>
+
+    <footer>
+        This certificate has been generated and verified digitally.
+    </footer>
 </div>
 
 <script>
-    // Get Certificate No from URL query string
+window.onload = function () {
     const params = new URLSearchParams(window.location.search);
-    const certNo = params.get('certNo') || 'NA';
-    document.getElementById('certNo').textContent = `Certificate No: ${certNo}`;
+    const certNo = params.get('certNo');
+
+    const badge = document.getElementById('statusBadge');
+
+    if (!certNo) {
+        document.getElementById('certNo').textContent = 'Not Found';
+        badge.textContent = 'Not Verified ❌';
+        badge.classList.add('not-verified');
+        return;
+    }
+
+    // Call your Power Automate flow endpoint
+    fetch("https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ certNo })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.Message && data.Message === "No") {
+            // Status blank → Not Verified
+            badge.textContent = 'Not Verified ❌';
+            badge.classList.remove('verified');
+            badge.classList.add('not-verified');
+
+            document.getElementById('certNo').textContent = certNo;
+            document.getElementById('name').textContent = 'Not Found';
+            document.getElementById('designation').textContent = 'Not Found';
+            document.getElementById('date').textContent = 'Not Found';
+        } else {
+            // Status Issued → show details
+            badge.textContent = 'Verified ✅';
+            badge.classList.remove('not-verified');
+            badge.classList.add('verified');
+
+            document.getElementById('certNo').textContent = data["Certificate No"];
+            document.getElementById('name').textContent = data["Name"];
+            document.getElementById('designation').textContent = data["Designation"];
+            document.getElementById('date').textContent = data["Date of Issue"];
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        badge.textContent = 'Error ❌';
+        badge.classList.remove('verified');
+        badge.classList.add('not-verified');
+    });
+};
 </script>
 
 </body>
