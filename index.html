@@ -168,12 +168,20 @@ window.onload = async function () {
             fields.designation.textContent = 'Not Found';
             fields.date.textContent = 'Not Found';
         } else {
-            badge.textContent = 'Verified ✅';
-            badge.className = 'badge verified';
+            // Fill fields
             fields.cert.textContent = data['Certificate No'];
             fields.name.textContent = data['Name'];
             fields.designation.textContent = data['Designation'];
             fields.date.textContent = data['Date of Issue'];
+
+            // Verification condition: Name AND Date must exist
+            if (data['Name'] && data['Date of Issue']) {
+                badge.textContent = 'Verified ✅';
+                badge.className = 'badge verified';
+            } else {
+                badge.textContent = 'Not Verified ❌';
+                badge.className = 'badge not-verified';
+            }
         }
     } catch (e) {
         console.error('Verification error:', e);
