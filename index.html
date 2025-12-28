@@ -1,105 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Certificate Verification</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Certificate Verification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0b3c5d, #1e88e5);
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-        }
-
-        .card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 520px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-            text-align: center;
-        }
-
-        .header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            gap: 12px;
-        }
-
-        .header-row h1 {
-            flex: 1;
-            margin: 0;
-            color: #0b3c5d;
-            text-align: center;
-            font-size: 24px;
-            line-height: 1.2;
-        }
-
-        .logo {
-            max-height: 80px; /* Logo size fixed at 80px */
-            width: auto;
-            object-fit: contain;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-weight: 600;
-            color: #fff;
-            margin: 15px 0 25px;
-        }
-
-        .verified { background: #28a745; }
-        .not-verified { background: #dc3545; }
-        .checking { background: #ffc107; color: #000; }
-
-        .details { text-align: left; font-size: 16px; }
-
-        .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .label { font-weight: 600; color: #0b3c5d; }
-        .value { color: #333; text-align: right; max-width: 60%; word-wrap: break-word; }
-
-        footer {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #777;
-            text-align: center;
-        }
-    </style>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0b3c5d, #1e88e5);
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    }
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 520px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+    .header-row h1 {
+      flex: 1;
+      margin: 0;
+      color: #0b3c5d;
+      text-align: center;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+    .logo {
+      max-height: 80px; /* fixed at 80px */
+      width: auto;
+      object-fit: contain;
+    }
+    .badge {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #fff;
+      margin: 15px 0 25px;
+    }
+    .verified { background: #28a745; }
+    .not-verified { background: #dc3545; }
+    .checking { background: #ffc107; color: #000; }
+    .details { text-align: left; font-size: 16px; }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .label { font-weight: 600; color: #0b3c5d; }
+    .value { color: #333; text-align: right; max-width: 60%; word-wrap: break-word; }
+    footer {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="card">
+  <div class="card">
     <div class="header-row">
-        <!-- Left: MAJU logo -->
-        <img src="https://i.postimg.cc/hjDBYBFW/MAJU-LOGO-PNG.png" alt="MAJU Logo" class="logo">
-
-        <h1>Certificate Verification</h1>
-
-        <!-- Right: QEC logo -->
-        <img src="https://i.postimg.cc/V6x38Qpc/MAJU-QEC-PNG.png" alt="QEC Logo" class="logo">
+      <img src="https://i.postimg.cc/hjDBYBFW/MAJU-LOGO-PNG.png" alt="MAJU Logo" class="logo" />
+      <h1>Certificate Verification</h1>
+      <img src="https://i.postimg.cc/V6x38Qpc/MAJU-QEC-PNG.png" alt="QEC Logo" class="logo" />
     </div>
 
-    <!-- Default state: Not Verified -->
     <div id="statusBadge" class="badge not-verified">Not Verified ❌</div>
 
     <div class="details">
-        <div class="row">
-            <div class="label">Certificate No</div>
-            <div class="value" id="certNo">
+      <div class="row">
+        <div class="label">Certificate No</div>
+        <div class="value" id="certNo">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Name</div>
+        <div class="value" id="name">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Designation</div>
+        <div class="value" id="designation">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Date of Issue</div>
+        <div class="value" id="date">—</div>
+      </div>
+    </div>
+
+    <footer>
+      This Certificate issued by the QEC Department, Mohammad Ali Jinnah University, Karachi.
+    </footer>
+  </div>
+
+  <script>
+    window.onload = async function () {
+      const params = new URLSearchParams(window.location.search);
+      const certNo = params.get('certNo');
+
+      const badge = document.getElementById('statusBadge');
+      const fields = {
+        cert: document.getElementById('certNo'),
+        name: document.getElementById('name'),
+        designation: document.getElementById('designation'),
+        date: document.getElementById('date')
+      };
+
+      // Helper to set badge/state
+      const setBadge = (text, cls) => {
+        badge.textContent = text;
+        badge.className = 'badge ' + cls;
+      };
+      const setValues = (c, n, d, dt) => {
+        fields.cert.textContent = c ?? '—';
+        fields.name.textContent = n ?? '—';
+        fields.designation.textContent = d ?? '—';
+        fields.date.textContent = dt ?? '—';
+      };
+
+      // If no certNo, keep Not Verified
+      if (!certNo) {
+        setValues('Not Found', 'Not Found', 'Not Found', 'Not Found');
+        return;
+      }
+
+      // Show checking
+      setBadge('Checking... ⏳', 'checking');
+
+      // Replace with your actual endpoint
+      const flowUrl = 'YOUR_FLOW_URL_HERE';
+
+      try {
+        const res = await fetch(flowUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ certNo })
+        });
+
+        // If non-200, treat as Not Verified
+        if (!res.ok) {
+          setBadge('Not Verified ❌', 'not-verified');
+          setValues(certNo, 'Error', 'Error', 'Error');
+          return;
+        }
+
+        // Some endpoints return text or malformed JSON; handle both
+        const rawText = await res.text();
+        let data;
+        try {
+          data = JSON.parse(rawText);
+        } catch {
+          // Not JSON → Not Verified
+          setBadge('Not Verified ❌', 'not-verified');
+          setValues(certNo, 'Error', 'Error', 'Error');
+          return;
+        }
+
+        // Normalize message flag (handles "Yes"/"No", true/false, case/space)
+        const msg = (data.Message ?? data.message ?? '').toString().trim().toLowerCase();
+
+        if (msg === 'no' || msg === 'false' || msg === '0') {
+          setBadge('Not Verified ❌', 'not-verified');
+          setValues(certNo, 'Not Found', 'Not Found', 'Not Found');
+          return;
+        }
+
+        // Extract values safely from common key variations and nested Result objects
+        const src = data.Result ?? data.result ?? data;
+
+        const certificateVal =
+          src['Certificate No'] ?? src.CertificateNo ?? src.certificateNo ?? src.CertNo ?? certNo;
+
+        const nameVal =
+          src['Name'] ?? src.FullName ?? src.name ?? src.fullName ?? src.StudentName;
+
+        const designationVal =
+          src['Designation'] ?? src.DesignationTitle ?? src.designation ?? src.Title;
+
+        const dateVal =
+          src['Date of Issue'] ?? src.DateOfIssue ?? src.issueDate ?? src.IssueDate ?? src.Date;
+
+        // Consider Verified only if we have at least certificate number and name
+        const hasEssential = Boolean(certificateVal) || Boolean(nameVal);
+
+        if (!hasEssential) {
+          setBadge('Not Verified ❌', 'not-verified');
+          setValues(certNo, 'Not Found', 'Not Found', 'Not Found');
+          return;
+        }
+
+        setBadge('Verified ✅', 'verified');
+        setValues(certificateVal, nameVal, designationVal, dateVal);
+
+      } catch (e) {
+        // Network/CORS/parse errors → Not Verified
+        setBadge('Not Verified ❌', 'not-verified');
+        setValues(certNo || 'Not Found', 'Error', 'Error', 'Error');
+      }
+    };
+  </script>
+</body>
+</html>
