@@ -44,7 +44,7 @@
         }
 
         .logo {
-            height: 100px; /* Increased size */
+            max-height: 80px; /* fixed at 80px */
             width: auto;
             object-fit: contain;
         }
@@ -60,6 +60,7 @@
 
         .verified { background: #28a745; }
         .not-verified { background: #dc3545; }
+        .checking { background: #ffc107; color: #000; }
 
         .details { text-align: left; font-size: 16px; }
 
@@ -95,7 +96,8 @@
         <img src="https://i.postimg.cc/V6x38Qpc/MAJU-QEC-PNG.png" alt="QEC Logo" class="logo">
     </div>
 
-    <div id="statusBadge" class="badge verified">Verified ✅</div>
+    <!-- Default state: Not Verified -->
+    <div id="statusBadge" class="badge not-verified">Not Verified ❌</div>
 
     <div class="details">
         <div class="row">
@@ -136,14 +138,17 @@ window.onload = async function () {
 
     if (!certNo) {
         badge.textContent = 'Not Verified ❌';
-        badge.classList.remove('verified');
-        badge.classList.add('not-verified');
+        badge.className = 'badge not-verified';
         fields.cert.textContent = 'Not Found';
         fields.name.textContent = 'Not Found';
         fields.designation.textContent = 'Not Found';
         fields.date.textContent = 'Not Found';
         return;
     }
+
+    // Show checking state while fetching
+    badge.textContent = 'Checking... ⏳';
+    badge.className = 'badge checking';
 
     const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
 
@@ -157,16 +162,14 @@ window.onload = async function () {
 
         if (data.Message === 'No') {
             badge.textContent = 'Not Verified ❌';
-            badge.classList.remove('verified');
-            badge.classList.add('not-verified');
+            badge.className = 'badge not-verified';
             fields.cert.textContent = certNo;
             fields.name.textContent = 'Not Found';
             fields.designation.textContent = 'Not Found';
             fields.date.textContent = 'Not Found';
         } else {
             badge.textContent = 'Verified ✅';
-            badge.classList.remove('not-verified');
-            badge.classList.add('verified');
+            badge.className = 'badge verified';
             fields.cert.textContent = data['Certificate No'];
             fields.name.textContent = data['Name'];
             fields.designation.textContent = data['Designation'];
@@ -175,8 +178,7 @@ window.onload = async function () {
     } catch (e) {
         console.error('Verification error:', e);
         badge.textContent = 'Not Verified ❌';
-        badge.classList.remove('verified');
-        badge.classList.add('not-verified');
+        badge.className = 'badge not-verified';
         fields.cert.textContent = certNo || 'Not Found';
         fields.name.textContent = 'Error';
         fields.designation.textContent = 'Error';
