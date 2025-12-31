@@ -138,7 +138,7 @@ window.onload = async function () {
 
     // Audit log function
     async function logScan(certificateNo, name) {
-        const loggerUrl = "PASTE-YOUR-AUDIT-LOG-FLOW-URL-HERE"; // <-- Audit log flow URL
+        const loggerUrl = "https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/276330ab501446fd9edcf36f687a0a07/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2e_IaOitt-PHsHkYaBDj4p6dIDDlJ66jtTnd0XYILHk"; 
         const payload = {
             certificateNo: certificateNo || "Unknown",
             name: name || "Unknown",
@@ -171,7 +171,7 @@ window.onload = async function () {
     badge.textContent = 'Checking... ⏳';
     badge.className = 'badge checking';
 
-    const flowUrl = 'YOUR-VERIFICATION-FLOW-URL-HERE'; // <-- Verification flow URL
+    const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io'; // Verification flow URL
 
     try {
         const res = await fetch(flowUrl, {
