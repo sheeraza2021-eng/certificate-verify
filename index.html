@@ -44,7 +44,7 @@
         }
 
         .logo {
-            max-height: 80px; /* fixed at 80px */
+            max-height: 80px;
             width: auto;
             object-fit: contain;
         }
@@ -136,6 +136,25 @@ window.onload = async function () {
         date: document.getElementById('date')
     };
 
+    // Audit log function
+    async function logScan(certificateNo, name) {
+        const loggerUrl = "PASTE-YOUR-AUDIT-LOG-FLOW-URL-HERE"; // <-- Audit log flow URL
+        const payload = {
+            certificateNo: certificateNo || "Unknown",
+            name: name || "Unknown",
+            timestamp: new Date().toISOString()
+        };
+        try {
+            await fetch(loggerUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+        } catch (err) {
+            console.error("Logging failed:", err);
+        }
+    }
+
     if (!certNo) {
         badge.textContent = 'Not Verified ❌';
         badge.className = 'badge not-verified';
@@ -143,6 +162,8 @@ window.onload = async function () {
         fields.name.textContent = 'Not Found';
         fields.designation.textContent = 'Not Found';
         fields.date.textContent = 'Not Found';
+
+        logScan("Unknown", "Not Found");
         return;
     }
 
@@ -150,7 +171,7 @@ window.onload = async function () {
     badge.textContent = 'Checking... ⏳';
     badge.className = 'badge checking';
 
-    const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
+    const flowUrl = 'YOUR-VERIFICATION-FLOW-URL-HERE'; // <-- Verification flow URL
 
     try {
         const res = await fetch(flowUrl, {
@@ -167,6 +188,8 @@ window.onload = async function () {
             fields.name.textContent = 'Not Found';
             fields.designation.textContent = 'Not Found';
             fields.date.textContent = 'Not Found';
+
+            logScan(certNo, "Not Found");
         } else {
             // Fill fields
             fields.cert.textContent = data['Certificate No'];
@@ -178,9 +201,13 @@ window.onload = async function () {
             if (data['Name'] && data['Date of Issue']) {
                 badge.textContent = 'Verified ✅';
                 badge.className = 'badge verified';
+
+                logScan(certNo, data['Name']);
             } else {
                 badge.textContent = 'Not Verified ❌';
                 badge.className = 'badge not-verified';
+
+                logScan(certNo, data['Name'] || "Unknown");
             }
         }
     } catch (e) {
@@ -191,6 +218,8 @@ window.onload = async function () {
         fields.name.textContent = 'Error';
         fields.designation.textContent = 'Error';
         fields.date.textContent = 'Error';
+
+        logScan(certNo, "Error");
     }
 };
 </script>
