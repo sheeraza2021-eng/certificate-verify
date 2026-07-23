@@ -120,6 +120,10 @@
             <div class="value" id="organizedBy">—</div>
         </div>
         <div class="row">
+            <div class="label">Trainer Name</div>
+            <div class="value" id="trainerName">—</div>
+        </div>
+        <div class="row">
             <div class="label">Date of Issue</div>
             <div class="value" id="date">—</div>
         </div>
@@ -143,6 +147,7 @@ window.onload = async function () {
         trainingName: document.getElementById('trainingName'),
         heldOn: document.getElementById('heldOn'),
         organizedBy: document.getElementById('organizedBy'),
+        trainerName: document.getElementById('trainerName'),
         date: document.getElementById('date')
     };
 
@@ -181,6 +186,7 @@ window.onload = async function () {
             fields.trainingName.textContent = data['Training Name'] || 'Not Found';
             fields.heldOn.textContent = data['Held on'] || 'Not Found';
             fields.organizedBy.textContent = data['Organized by'] || 'Not Found';
+            fields.trainerName.textContent = data['Trainer Name'] || 'Not Found';
             fields.date.textContent = data['Date of Issue'];
 
             if (data['Name'] && data['Date of Issue']) {
@@ -200,6 +206,7 @@ window.onload = async function () {
         fields.trainingName.textContent = 'Error';
         fields.heldOn.textContent = 'Error';
         fields.organizedBy.textContent = 'Error';
+        fields.trainerName.textContent = 'Error';
         fields.date.textContent = 'Error';
     }
 };
