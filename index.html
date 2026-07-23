@@ -6,78 +6,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0b3c5d, #1e88e5);
+            background: #0b1f33;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(212,175,55,0.08), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(212,175,55,0.08), transparent 40%);
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            padding: 24px;
         }
 
         .card {
             background: #ffffff;
             width: 100%;
             max-width: 520px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-            text-align: center;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            overflow: hidden;
+            border: 1px solid #e7dcc2;
+        }
+
+        .gold-strip {
+            height: 6px;
+            background: linear-gradient(90deg, #b8860b, #e6c65c, #b8860b);
         }
 
         .header-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            padding: 28px 30px 20px;
             gap: 12px;
+            border-bottom: 1px solid #f0ead9;
         }
 
         .header-row h1 {
             flex: 1;
             margin: 0;
-            color: #0b3c5d;
+            color: #0b1f33;
             text-align: center;
-            font-size: 24px;
-            line-height: 1.2;
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
         .logo {
-            max-height: 80px;
+            max-height: 56px;
             width: auto;
             object-fit: contain;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-weight: 600;
-            color: #fff;
-            margin: 15px 0 25px;
+        .seal-zone {
+            text-align: center;
+            padding: 30px 30px 10px;
         }
 
-        .verified { background: #28a745; }
-        .not-verified { background: #dc3545; }
-        .checking { background: #ffc107; color: #000; }
+        .seal {
+            width: 92px;
+            height: 92px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
-        .details { text-align: left; font-size: 16px; }
+        .seal.verified {
+            background: radial-gradient(circle at 35% 30%, #f6e2a0, #d4af37 55%, #a9821f 100%);
+            box-shadow: 0 6px 16px rgba(184,134,11,0.45), inset 0 0 0 4px #fffbe8;
+        }
+
+        .seal.not-verified {
+            background: radial-gradient(circle at 35% 30%, #f7b3b3, #d9534f 55%, #a83a37 100%);
+            box-shadow: 0 6px 16px rgba(169,58,55,0.35), inset 0 0 0 4px #fff0f0;
+        }
+
+        .seal.checking {
+            background: radial-gradient(circle at 35% 30%, #fdeec0, #e6b325 55%, #b5860f 100%);
+            box-shadow: 0 6px 16px rgba(181,134,15,0.3), inset 0 0 0 4px #fffbe8;
+        }
+
+        .seal svg { width: 44px; height: 44px; }
+
+        .badge-label {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin: 0 0 4px;
+        }
+
+        .badge-label.verified { color: #a9821f; }
+        .badge-label.not-verified { color: #a83a37; }
+        .badge-label.checking { color: #b5860f; }
+
+        .badge-sub {
+            font-size: 13px;
+            color: #8a8f98;
+            margin: 0 0 24px;
+        }
+
+        .details {
+            padding: 4px 30px 24px;
+            text-align: left;
+        }
 
         .row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e7dcc2;
         }
 
-        .label { font-weight: 600; color: #0b3c5d; }
-        .value { color: #333; text-align: right; max-width: 60%; word-wrap: break-word; }
+        .row:last-child { border-bottom: none; }
+
+        .label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a9821f;
+            white-space: nowrap;
+        }
+
+        .value {
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+            max-width: 62%;
+            word-wrap: break-word;
+        }
 
         footer {
-            margin-top: 20px;
-            font-size: 13px;
-            color: #777;
+            padding: 16px 30px;
+            background: #faf7ee;
+            border-top: 1px solid #f0ead9;
+            font-size: 12px;
+            color: #9a8f6d;
             text-align: center;
         }
     </style>
@@ -86,13 +159,22 @@
 <body>
 
 <div class="card">
+    <div class="gold-strip"></div>
     <div class="header-row">
         <img src="https://i.postimg.cc/hjDBYBFW/MAJU-LOGO-PNG.png" alt="MAJU Logo" class="logo">
         <h1>Certificate Verification</h1>
         <img src="https://image2url.com/r2/default/images/1768464173489-b76e6ebe-4356-40bb-86f2-80d601a63481.png" alt="QEC Logo" class="logo">
     </div>
 
-    <div id="statusBadge" class="badge not-verified">Not Verified ❌</div>
+    <div class="seal-zone">
+        <div id="seal" class="seal not-verified">
+            <svg id="sealIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <p id="badgeLabel" class="badge-label not-verified">Not Verified</p>
+        <p class="badge-sub">Official certificate scan result</p>
+    </div>
 
     <div class="details">
         <div class="row">
@@ -139,7 +221,10 @@ window.onload = async function () {
     const params = new URLSearchParams(window.location.search);
     const certNo = params.get('certNo');
 
-    const badge = document.getElementById('statusBadge');
+    const seal = document.getElementById('seal');
+    const sealIcon = document.getElementById('sealIcon');
+    const badgeLabel = document.getElementById('badgeLabel');
+
     const fields = {
         cert: document.getElementById('certNo'),
         name: document.getElementById('name'),
@@ -151,10 +236,22 @@ window.onload = async function () {
         date: document.getElementById('date')
     };
 
+    const icons = {
+        verified: '<path d="M5 12.5L10 17L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>',
+        'not-verified': '<path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>',
+        checking: '<circle cx="12" cy="12" r="3" fill="#fff"/>'
+    };
+
+    function setStatus(state, label) {
+        seal.className = 'seal ' + state;
+        badgeLabel.className = 'badge-label ' + state;
+        badgeLabel.textContent = label;
+        sealIcon.innerHTML = icons[state];
+    }
+
     function setNotFound() {
         Object.values(fields).forEach(el => { if (el !== fields.cert) el.textContent = 'Not Found'; });
-        badge.textContent = 'Not Verified ❌';
-        badge.className = 'badge not-verified';
+        setStatus('not-verified', 'Not Verified');
     }
 
     if (!certNo) {
@@ -163,8 +260,7 @@ window.onload = async function () {
         return;
     }
 
-    badge.textContent = 'Checking... ⏳';
-    badge.className = 'badge checking';
+    setStatus('checking', 'Checking...');
 
     const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
 
@@ -190,11 +286,9 @@ window.onload = async function () {
             fields.date.textContent = data['Date of Issue'];
 
             if (data['Name'] && data['Date of Issue']) {
-                badge.textContent = 'Verified ✅';
-                badge.className = 'badge verified';
+                setStatus('verified', 'Verified');
             } else {
-                badge.textContent = 'Not Verified ❌';
-                badge.className = 'badge not-verified';
+                setStatus('not-verified', 'Not Verified');
             }
         }
     } catch (e) {
