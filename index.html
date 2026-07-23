@@ -44,7 +44,7 @@
         }
 
         .logo {
-            max-height: 80px; /* fixed at 80px */
+            max-height: 80px;
             width: auto;
             object-fit: contain;
         }
@@ -87,16 +87,11 @@
 
 <div class="card">
     <div class="header-row">
-        <!-- Left: MAJU logo -->
         <img src="https://i.postimg.cc/hjDBYBFW/MAJU-LOGO-PNG.png" alt="MAJU Logo" class="logo">
-
         <h1>Certificate Verification</h1>
-
-        <!-- Right: QEC logo -->
         <img src="https://image2url.com/r2/default/images/1768464173489-b76e6ebe-4356-40bb-86f2-80d601a63481.png" alt="QEC Logo" class="logo">
     </div>
 
-    <!-- Default state: Not Verified -->
     <div id="statusBadge" class="badge not-verified">Not Verified ❌</div>
 
     <div class="details">
@@ -111,6 +106,18 @@
         <div class="row">
             <div class="label">Designation</div>
             <div class="value" id="designation">—</div>
+        </div>
+        <div class="row">
+            <div class="label">Training Name</div>
+            <div class="value" id="trainingName">—</div>
+        </div>
+        <div class="row">
+            <div class="label">Held On</div>
+            <div class="value" id="heldOn">—</div>
+        </div>
+        <div class="row">
+            <div class="label">Organized By</div>
+            <div class="value" id="organizedBy">—</div>
         </div>
         <div class="row">
             <div class="label">Date of Issue</div>
@@ -133,20 +140,24 @@ window.onload = async function () {
         cert: document.getElementById('certNo'),
         name: document.getElementById('name'),
         designation: document.getElementById('designation'),
+        trainingName: document.getElementById('trainingName'),
+        heldOn: document.getElementById('heldOn'),
+        organizedBy: document.getElementById('organizedBy'),
         date: document.getElementById('date')
     };
 
-    if (!certNo) {
+    function setNotFound() {
+        Object.values(fields).forEach(el => { if (el !== fields.cert) el.textContent = 'Not Found'; });
         badge.textContent = 'Not Verified ❌';
         badge.className = 'badge not-verified';
+    }
+
+    if (!certNo) {
         fields.cert.textContent = 'Not Found';
-        fields.name.textContent = 'Not Found';
-        fields.designation.textContent = 'Not Found';
-        fields.date.textContent = 'Not Found';
+        setNotFound();
         return;
     }
 
-    // Show checking state while fetching
     badge.textContent = 'Checking... ⏳';
     badge.className = 'badge checking';
 
@@ -161,20 +172,17 @@ window.onload = async function () {
         const data = await res.json();
 
         if (data.Message === 'No') {
-            badge.textContent = 'Not Verified ❌';
-            badge.className = 'badge not-verified';
             fields.cert.textContent = certNo;
-            fields.name.textContent = 'Not Found';
-            fields.designation.textContent = 'Not Found';
-            fields.date.textContent = 'Not Found';
+            setNotFound();
         } else {
-            // Fill fields
             fields.cert.textContent = data['Certificate No'];
             fields.name.textContent = data['Name'];
             fields.designation.textContent = data['Designation'];
+            fields.trainingName.textContent = data['Training Name'] || 'Not Found';
+            fields.heldOn.textContent = data['Held on'] || 'Not Found';
+            fields.organizedBy.textContent = data['Organized by'] || 'Not Found';
             fields.date.textContent = data['Date of Issue'];
 
-            // Verification condition: Name AND Date must exist
             if (data['Name'] && data['Date of Issue']) {
                 badge.textContent = 'Verified ✅';
                 badge.className = 'badge verified';
@@ -185,11 +193,13 @@ window.onload = async function () {
         }
     } catch (e) {
         console.error('Verification error:', e);
-        badge.textContent = 'Not Verified ❌';
-        badge.className = 'badge not-verified';
         fields.cert.textContent = certNo || 'Not Found';
+        setNotFound();
         fields.name.textContent = 'Error';
         fields.designation.textContent = 'Error';
+        fields.trainingName.textContent = 'Error';
+        fields.heldOn.textContent = 'Error';
+        fields.organizedBy.textContent = 'Error';
         fields.date.textContent = 'Error';
     }
 };
