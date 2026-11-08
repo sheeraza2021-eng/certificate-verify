@@ -1,331 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Certificate Verification</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0b1f33;
-            background-image:
-                radial-gradient(circle at 20% 20%, rgba(212,175,55,0.08), transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(212,175,55,0.08), transparent 40%);
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            padding: 14px;
-        }
-
-        .card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 440px;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-            overflow: hidden;
-            border: 1px solid #e7dcc2;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .gold-strip {
-            height: 5px;
-            background: linear-gradient(90deg, #b8860b, #e6c65c, #b8860b);
-            flex-shrink: 0;
-        }
-
-        .header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px 16px;
-            gap: 8px;
-            border-bottom: 1px solid #f0ead9;
-            flex-shrink: 0;
-        }
-
-        .header-row h1 {
-            flex: 1;
-            margin: 0;
-            color: #0b1f33;
-            text-align: center;
-            font-size: 17px;
-            font-weight: 700;
-            letter-spacing: 0.01em;
-        }
-
-        .logo {
-            max-height: 40px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .seal-zone {
-            text-align: center;
-            padding: 20px 18px 8px;
-            flex-shrink: 0;
-        }
-
-        .seal {
-            width: 68px;
-            height: 68px;
-            margin: 0 auto 10px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .seal.verified {
-            background: radial-gradient(circle at 35% 30%, #a8e6b0, #2e9e4f 55%, #1e6d38 100%);
-            box-shadow: 0 6px 16px rgba(30,109,56,0.4), inset 0 0 0 4px #eafcee;
-        }
-
-        .seal.not-verified {
-            background: radial-gradient(circle at 35% 30%, #f7b3b3, #d9534f 55%, #a83a37 100%);
-            box-shadow: 0 6px 16px rgba(169,58,55,0.35), inset 0 0 0 4px #fff0f0;
-        }
-
-        .seal.checking {
-            background: radial-gradient(circle at 35% 30%, #fdeec0, #e6b325 55%, #b5860f 100%);
-            box-shadow: 0 6px 16px rgba(181,134,15,0.3), inset 0 0 0 4px #fffbe8;
-        }
-
-        .seal svg { width: 32px; height: 32px; }
-
-        .badge-label {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            margin: 0 0 3px;
-        }
-
-        .badge-label.verified { color: #1e6d38; }
-        .badge-label.not-verified { color: #a83a37; }
-        .badge-label.checking { color: #b5860f; }
-
-        .badge-sub {
-            font-size: 12px;
-            color: #8a8f98;
-            margin: 0 0 14px;
-        }
-
-        .details {
-            padding: 4px 20px 14px;
-            text-align: left;
-        }
-
-        .row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 9px 0;
-            border-bottom: 1px dashed #e7dcc2;
-        }
-
-        .row:last-child { border-bottom: none; }
-
-        .label {
-            font-size: 11.5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #a9821f;
-            white-space: nowrap;
-        }
-
-        .value {
-            color: #1f2937;
-            font-size: 13.5px;
-            font-weight: 500;
-            text-align: right;
-            max-width: 62%;
-            word-wrap: break-word;
-        }
-
-        footer {
-            padding: 10px 20px;
-            background: #faf7ee;
-            border-top: 1px solid #f0ead9;
-            font-size: 10.5px;
-            color: #9a8f6d;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        @media (max-height: 620px) {
-            .header-row { padding: 12px 18px 10px; }
-            .header-row h1 { font-size: 15px; }
-            .logo { max-height: 30px; }
-            .seal-zone { padding: 10px 18px 6px; }
-            .seal { width: 50px; height: 50px; }
-            .seal svg { width: 24px; height: 24px; }
-            .row { padding: 6px 0; }
-        }
-
-        @media (max-width: 380px) {
-            .card { max-width: 100%; }
-            .header-row h1 { font-size: 14px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate Verification</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:14px;font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body[data-theme="1"]{--bg:#0b1f33;--card:#fff;--text:#1f2937;--label:#a9821f;--line:#e7dcc2;--edge:#e7dcc2;--foot:#faf7ee;--footText:#9a8f6d;--title:#0b1f33;--spark:#e6c65c}
+body[data-theme="2"]{--bg:radial-gradient(circle at 50% 0,#14264a,#060b18 70%);--card:#0f1a2e;--text:#e6edf7;--label:#7fa6d9;--line:#1f3355;--edge:#27426e;--foot:#0b1424;--footText:#6f86a8;--title:#fff;--spark:#7dffb0}
+body[data-theme="3"]{--bg:#e9e2d0;--card:#fffdf7;--text:#3b2f1a;--label:#8a6a12;--line:#e6dcc0;--edge:#b8860b;--foot:#f6efdb;--footText:#8c7a4a;--title:#3b2f1a;--spark:#d4af37;font-family:Georgia,'Times New Roman',serif}
+.card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--edge);border-radius:16px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+body[data-theme="2"] .card{box-shadow:0 0 0 1px #1b2f52,0 24px 60px rgba(0,0,0,.6)}
+body[data-theme="3"] .card{border:3px double var(--edge);border-radius:4px;box-shadow:0 14px 34px rgba(80,60,10,.25)}
+.strip{height:5px;background:linear-gradient(90deg,#b8860b,#e6c65c,#b8860b)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.head h1{flex:1;margin:0;text-align:center;font-size:17px;color:var(--title)}
+.logo{max-height:40px;width:auto;object-fit:contain}
+body[data-theme="2"] .logo{background:#fff;border-radius:6px;padding:3px}
+.zone{text-align:center;padding:22px 18px 8px}
+.badge{position:relative;width:92px;height:92px;margin:0 auto 12px;--s1:#e6b325;--s2:#b5860f}
+.badge.ok{--s1:#2e9e4f;--s2:#1e6d38}
+.badge.no{--s1:#d9534f;--s2:#a83a37}
+.badge svg{width:100%;height:100%;overflow:visible}
+.shape{display:none}
+body[data-theme="1"] .s-circle,body[data-theme="2"] .s-shield,body[data-theme="3"] .s-rosette{display:block}
+.shape{fill:var(--s1);stroke:var(--s2);stroke-width:3;stroke-linejoin:round}
+body[data-theme="2"] .badge.ok svg{filter:drop-shadow(0 0 10px rgba(60,220,120,.55))}
+.ring{fill:none;stroke:#fff;stroke-width:2;opacity:.55}
+.mark{display:none;fill:none;stroke:#fff;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.mark path{stroke-dasharray:1;stroke-dashoffset:1}
+.ok .m-ok,.no .m-no,.wait .m-wait{display:block}
+.m-wait path{stroke-dasharray:none;stroke-dashoffset:0}
+.m-wait{transform-origin:50px 50px;animation:spin 1s linear infinite}
+.ok .shape,.no .shape{animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.ok .m-ok path{animation:draw .55s .45s ease-out forwards}
+.no .m-no path{animation:draw .4s .4s ease-out forwards}
+.no{animation:shake .5s .8s}
+.badge::before,.badge::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--s1);opacity:0}
+.ok::before{animation:ripple 2.4s 1s infinite}
+.ok::after{animation:ripple 2.4s 2.2s infinite}
+.sp{position:absolute;left:50%;top:50%;width:7px;height:7px;margin:-3px;border-radius:50%;background:var(--spark);opacity:0}
+.ok .sp{animation:spark 1.8s 1s infinite}
+.sp:nth-child(3){--a:0deg}.sp:nth-child(4){--a:60deg;animation-delay:1.2s}.sp:nth-child(5){--a:120deg;animation-delay:1.4s}
+.sp:nth-child(6){--a:180deg;animation-delay:1.1s}.sp:nth-child(7){--a:240deg;animation-delay:1.3s}.sp:nth-child(8){--a:300deg;animation-delay:1.5s}
+.label{margin:0 0 3px;font-size:17px;font-weight:700}
+.label.ok{color:#2e9e4f}.label.no{color:#d9534f}.label.wait{color:#c99a1c}
+.sub{margin:0 0 12px;font-size:12px;color:var(--footText)}
+.stamp{display:none;margin:0 auto 12px;width:max-content;padding:3px 14px;border:2px solid #2e9e4f;border-radius:4px;color:#2e9e4f;font-weight:700;letter-spacing:.14em;font-size:13px;transform:rotate(-6deg)}
+body[data-theme="3"] .stamp.on{display:block;animation:slam .5s 1.1s both}
+.details{padding:4px 20px 14px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s}
+.row.in{opacity:1;transform:none}
+.row:last-child{border-bottom:0}
+.k{font-size:12px;font-weight:700;color:var(--label);white-space:nowrap}
+.v{font-size:13.5px;text-align:right;max-width:62%;word-wrap:break-word}
+footer{padding:10px 20px;background:var(--foot);border-top:1px solid var(--line);font-size:10.5px;color:var(--footText);text-align:center}
+.pv{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;background:#000a;padding:6px;border-radius:10px}
+.pv button{font:12px system-ui;padding:6px 10px;border:0;border-radius:6px;cursor:pointer;background:#fff;color:#111}
+.pv button:focus-visible{outline:2px solid #e6c65c;outline-offset:2px}
+@keyframes pop{0%{transform:scale(0) rotate(-25deg);transform-origin:50px 50px}60%{transform:scale(1.12) rotate(4deg);transform-origin:50px 50px}100%{transform:scale(1);transform-origin:50px 50px}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ripple{0%{opacity:.6;transform:scale(.9)}100%{opacity:0;transform:scale(1.7)}}
+@keyframes spark{0%{opacity:0;transform:rotate(var(--a)) translateY(-44px) scale(.4)}30%{opacity:1}100%{opacity:0;transform:rotate(var(--a)) translateY(-70px) scale(1)}}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes slam{0%{opacity:0;transform:rotate(-6deg) scale(2.2)}70%{opacity:1;transform:rotate(-6deg) scale(.95)}100%{opacity:1;transform:rotate(-6deg) scale(1)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.mark path{stroke-dashoffset:0}.row{opacity:1;transform:none}}
+</style>
 </head>
-
-<body>
-
+<body data-theme="1">
 <div class="card">
-    <div class="gold-strip"></div>
-    <div class="header-row">
-        <img src="https://i.postimg.cc/hjDBYBFW/MAJU-LOGO-PNG.png" alt="MAJU Logo" class="logo">
-        <h1>Certificate Verification</h1>
-        <img src="https://image2url.com/r2/default/images/1768464173489-b76e6ebe-4356-40bb-86f2-80d601a63481.png" alt="QEC Logo" class="logo">
+  <div class="strip"></div>
+  <div class="head">
+    <img class="logo" src="https://i.postimg.cc/hjDBYBFW/MAJU-LOGO-PNG.png" alt="MAJU logo">
+    <h1>Certificate Verification</h1>
+    <img class="logo" src="https://image2url.com/r2/default/images/1768464173489-b76e6ebe-4356-40bb-86f2-80d601a63481.png" alt="QEC logo">
+  </div>
+  <div class="zone">
+    <div id="badge" class="badge wait" role="img" aria-label="Checking">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="shape s-circle" cx="50" cy="50" r="44"/>
+        <path class="shape s-shield" d="M50 6 L87 20 V50 C87 72 71 86 50 94 C29 86 13 72 13 50 V20 Z"/>
+        <path id="rosette" class="shape s-rosette"/>
+        <circle class="ring" cx="50" cy="50" r="35"/>
+        <g class="mark m-ok"><path pathLength="1" d="M30 52 L44 66 L71 35"/></g>
+        <g class="mark m-no"><path pathLength="1" d="M35 35 L65 65"/><path pathLength="1" d="M65 35 L35 65"/></g>
+        <g class="mark m-wait"><path d="M50 26 A24 24 0 0 1 74 50"/></g>
+      </svg>
+      <i class="sp"></i><i class="sp"></i><i class="sp"></i><i class="sp"></i><i class="sp"></i><i class="sp"></i>
     </div>
-
-    <div class="seal-zone">
-        <div id="seal" class="seal not-verified">
-            <svg id="sealIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
-            </svg>
-        </div>
-        <p id="badgeLabel" class="badge-label not-verified">Not Verified</p>
-        <p class="badge-sub">Official certificate scan result</p>
-    </div>
-
-    <div class="details">
-        <div class="row">
-            <div class="label">Certificate No</div>
-            <div class="value" id="certNo">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Name</div>
-            <div class="value" id="name">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Designation</div>
-            <div class="value" id="designation">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Training Name</div>
-            <div class="value" id="trainingName">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Held On</div>
-            <div class="value" id="heldOn">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Organized By</div>
-            <div class="value" id="organizedBy">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Trainer Name</div>
-            <div class="value" id="trainerName">—</div>
-        </div>
-        <div class="row">
-            <div class="label">Date of Issue</div>
-            <div class="value" id="date">—</div>
-        </div>
-    </div>
-
-    <footer>
-        This certificate is issued by the QEC Department, Mohammad Ali Jinnah University, Karachi.
-    </footer>
+    <p id="label" class="label wait">Checking…</p>
+    <p id="stamp" class="stamp">VERIFIED</p>
+    <p id="sub" class="sub">Looking up this certificate</p>
+  </div>
+  <div id="details" class="details"></div>
+  <footer>This certificate is issued by the QEC Department, Mohammad Ali Jinnah University, Karachi.</footer>
 </div>
+<div id="pv" class="pv" hidden></div>
 
 <script>
-window.onload = async function () {
-    const params = new URLSearchParams(window.location.search);
-    const certNo = params.get('certNo');
+// Power Automate verification flow URL.
+const FLOW_URL = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
 
-    const seal = document.getElementById('seal');
-    const sealIcon = document.getElementById('sealIcon');
-    const badgeLabel = document.getElementById('badgeLabel');
+const q = new URLSearchParams(location.search);
+document.body.dataset.theme = ['1','2','3'].includes(q.get('theme')) ? q.get('theme') : '1';
 
-    const fields = {
-        cert: document.getElementById('certNo'),
-        name: document.getElementById('name'),
-        designation: document.getElementById('designation'),
-        trainingName: document.getElementById('trainingName'),
-        heldOn: document.getElementById('heldOn'),
-        organizedBy: document.getElementById('organizedBy'),
-        trainerName: document.getElementById('trainerName'),
-        date: document.getElementById('date')
-    };
+// Rosette outline for theme 3
+(function(){
+  let d='';
+  for(let i=0;i<48;i++){const a=i*Math.PI/24-Math.PI/2,r=i%2?39:46;d+=(i?'L':'M')+(50+r*Math.cos(a)).toFixed(1)+' '+(50+r*Math.sin(a)).toFixed(1)}
+  document.getElementById('rosette').setAttribute('d',d+'Z');
+})();
 
-    const icons = {
-        verified: '<path d="M5 12.5L10 17L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>',
-        'not-verified': '<path d="M6 6L18 18M18 6L6 18" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>',
-        checking: '<circle cx="12" cy="12" r="3" fill="#fff"/>'
-    };
+const FIELDS=[['certNo','Certificate No'],['name','Name'],['designation','Designation'],['trainingName','Training Name'],['heldOn','Held On'],['organizedBy','Organized By'],['trainerName','Trainer Name'],['date','Date of Issue']];
+const box=document.getElementById('details');
+box.innerHTML=FIELDS.map(([id,l])=>`<div class="row"><div class="k">${l}</div><div class="v" id="${id}">—</div></div>`).join('');
+const el=id=>document.getElementById(id);
+const rows=[...box.children];
 
-    function setStatus(state, label) {
-        seal.className = 'seal ' + state;
-        badgeLabel.className = 'badge-label ' + state;
-        badgeLabel.textContent = label;
-        sealIcon.innerHTML = icons[state];
-    }
+const TEXT={ok:['Verified','This certificate is genuine'],no:['Not Verified','No issued certificate matches this number'],wait:['Checking…','Looking up this certificate']};
+function setState(s){
+  el('badge').className='badge '+s;
+  el('badge').setAttribute('aria-label',TEXT[s][0]);
+  el('label').className='label '+s;
+  el('label').textContent=TEXT[s][0];
+  el('sub').textContent=TEXT[s][1];
+  el('stamp').className='stamp'+(s==='ok'?' on':'');
+  rows.forEach(r=>r.classList.remove('in'));
+  if(s!=='wait') rows.forEach((r,i)=>setTimeout(()=>r.classList.add('in'),s==='ok'?900+i*90:200));
+}
+function fill(v){FIELDS.forEach(([id])=>el(id).textContent=v[id]||'Not Found')}
+function showOk(d){
+  fill({certNo:d['Certificate No'],name:d['Name'],designation:d['Designation'],trainingName:d['Training Name'],heldOn:d['Held on'],organizedBy:d['Organized by'],trainerName:d['Trainer Name'],date:d['Date of Issue']});
+  setState('ok');
+}
+function showNo(cert){fill({certNo:cert||'Not Found'});setState('no')}
 
-    function setNotFound() {
-        Object.values(fields).forEach(el => { if (el !== fields.cert) el.textContent = 'Not Found'; });
-        setStatus('not-verified', 'Not Verified');
-    }
+const DEMO={'Certificate No':'MAJU/QEC/FA-26-1128','Name':'Ali Raza','Designation':'Lecturer','Training Name':'OBE Curriculum Design','Held on':'November 5, 2026','Organized by':'QEC Department','Trainer Name':'Dr. Sample Trainer','Date of Issue':'08/11/2026 11:05:00 AM'};
 
-    if (!certNo) {
-        fields.cert.textContent = 'Not Found';
-        setNotFound();
-        return;
-    }
+async function verify(){
+  const cert=q.get('certNo');
+  if(!cert){showNo();return}
+  setState('wait');
+  try{
+    const res=await fetch(FLOW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({certNo:cert})});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const d=await res.json();
+    if(d.Message==='No'||!d['Name']||!d['Date of Issue']) showNo(cert); else showOk(d);
+  }catch(e){
+    console.error('Verification error:',e);
+    showNo(cert);
+    el('sub').textContent='Could not reach the verification service. Please try again.';
+  }
+}
 
-    setStatus('checking', 'Checking...');
-
-    const flowUrl = 'https://default12b221b30464422389e5888835778b.58.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/9cd32f7a18e142a88aa109008eb515e7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=zZPcMCkklDO6pl-qIDPfZVQ3h32d0vEA01VkYNKI4Io';
-
-    try {
-        const res = await fetch(flowUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ certNo })
-        });
-        const data = await res.json();
-
-        if (data.Message === 'No') {
-            fields.cert.textContent = certNo;
-            setNotFound();
-        } else {
-            fields.cert.textContent = data['Certificate No'];
-            fields.name.textContent = data['Name'];
-            fields.designation.textContent = data['Designation'];
-            fields.trainingName.textContent = data['Training Name'] || 'Not Found';
-            fields.heldOn.textContent = data['Held on'] || 'Not Found';
-            fields.organizedBy.textContent = data['Organized by'] || 'Not Found';
-            fields.trainerName.textContent = data['Trainer Name'] || 'Not Found';
-            fields.date.textContent = data['Date of Issue'];
-
-            if (data['Name'] && data['Date of Issue']) {
-                setStatus('verified', 'Verified');
-            } else {
-                setStatus('not-verified', 'Not Verified');
-            }
-        }
-    } catch (e) {
-        console.error('Verification error:', e);
-        fields.cert.textContent = certNo || 'Not Found';
-        setNotFound();
-        fields.name.textContent = 'Error';
-        fields.designation.textContent = 'Error';
-        fields.trainingName.textContent = 'Error';
-        fields.heldOn.textContent = 'Error';
-        fields.organizedBy.textContent = 'Error';
-        fields.trainerName.textContent = 'Error';
-        fields.date.textContent = 'Error';
-    }
-};
+if(q.has('preview')){
+  const pv=el('pv');pv.hidden=false;
+  const mk=(t,f)=>{const b=document.createElement('button');b.textContent=t;b.onclick=f;pv.appendChild(b)};
+  ['1','2','3'].forEach(n=>mk('Style '+n,()=>document.body.dataset.theme=n));
+  mk('Verified',()=>{setState('wait');setTimeout(()=>showOk(DEMO),50)});
+  mk('Not verified',()=>{setState('wait');setTimeout(()=>showNo('TEST-0001'),50)});
+  mk('Checking',()=>setState('wait'));
+}
+const demo=q.get('demo');
+if(demo==='ok') showOk(DEMO);
+else if(demo==='no') showNo('TEST-0001');
+else if(demo==='wait') setState('wait');
+else verify();
 </script>
-
 </body>
 </html>
